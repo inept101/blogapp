@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head.ejs') %> 
+    <title>Details</title>
+</head>
+<body>
+    <%- include('../partials/header.ejs') %> 
+
+
+    <main class="container">
+
+    <div class="card text-center">
+        <div class="card-header">
+          Blog by <strong> <%= blog.author %></strong>
+        </div>
+        <div class="card-body">
+            <img src="<%= blog.image %>" class="card-img-top w-50 p-3"" alt="...">
+          <h5 class="card-title"> <%= blog.title %></h5>
+          <p class="card-text"><%= blog.text %></p>
+          <a href="/blogs/<%=blog._id%>/edit" class="btn btn-primary">Edit</a>
+          <form action="/blogs/<%=blog._id%>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete</button>
+        </form>
+        </div>
+      </div>
+
+      </main>
+
+
+    <%- include('../partials/footer.ejs') %> 
+    
+</body>
+</html>
+
+

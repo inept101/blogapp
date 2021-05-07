@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head.ejs') %>
+    <title>New Blog</title>
+  </head>
+  <body>
+    <%- include('../partials/header.ejs') %>
+
+    <div class="container">
+
+    <div class="row">
+      <div class="col-lg-6">
+        <form action="/blogs" method="POST">
+          <div class="mb-3">
+            <label for="author" class="form-label"
+              >Author:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="blog[author]"
+              placeholder="Author name"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="title" class="form-label"
+              >Title:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="blog[title]"
+              placeholder="Title"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="image" class="form-label"
+              >Image URL:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="blog[image]"
+              placeholder="URL"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="text" class="form-label"
+              >Write Blog here:</label
+            >
+            <textarea class="form-control" name="blog[text]" rows="5"></textarea>
+          </div>
+          <div class="mbl-3">
+            <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>
