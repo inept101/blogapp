@@ -2,29 +2,31 @@
 <html lang="en">
   <head>
     <%- include('../partials/head.ejs') %>
-    <title>New Blog</title>
+    <title>Registration</title>
   </head>
   <body>
     <%- include('../partials/header.ejs') %>
 
     <div class="container "  style="margin-top:2rem;margin-bottom:5rem;width:80vw">
 
+
+        <%- include('../partials/flash') %>
       <section>
-        <h4 class="display-5">Add a new Blog.</h4>
+        <h4 class="display-5">Register</h4>
      </section>
 
     <div class="row">
       <div class="col-lg-6">
-        <form action="/blogs" method="POST" class="needs-validation" style="margin:10px auto " novalidate>
+        <form action="/register" method="POST" class="needs-validation" style="margin:10px auto " novalidate>
           <div class="mb-3">
-            <label for="author" class="form-label"
-              >Author:</label
+            <label for="Username" class="form-label"
+              >Username:</label
             >
             <input
               type="text"
               class="form-control"
-              name="blog[author]"
-              placeholder="Author name"
+              name="username"
+              placeholder="Username"
               required
             />
             <div class="valid-feedback">
@@ -33,14 +35,14 @@
           </div>
 
           <div class="mb-3">
-            <label for="title" class="form-label"
-              >Title:</label
+            <label for="email" class="form-label"
+              >Email:</label
             >
             <input
-              type="text"
+              type="email"
               class="form-control"
-              name="blog[title]"
-              placeholder="Title"
+              name="email"
+              placeholder="Email"
               required
             />
             <div class="valid-feedback">
@@ -48,28 +50,20 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="image" class="form-label"
-              >Image URL:</label
+            <label for="password" class="form-label"
+              >Password:</label
             >
             <input
-              type="text"
+              type="password"
               class="form-control"
-              name="blog[image]"
-              placeholder="URL"
+              name="password"
+              placeholder="Password"
             />
             <div class="valid-feedback">
               Looks good!
             </div>
           </div>
-          <div class="mb-3">
-            <label for="text" class="form-label"
-              >Write Blog here:</label
-            >
-            <textarea class="form-control" name="blog[text]" rows="5"  required></textarea>
-            <div class="valid-feedback">
-              Looks good!
-            </div>
-          </div>
+          
           <div class="mbl-3">
             <button type="submit" class="btn btn-dark btn-sm">Submit</button>
           </div>

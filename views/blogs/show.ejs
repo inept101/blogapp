@@ -10,6 +10,10 @@
 
     <main class="container">
 
+      <%- include('../partials/flash.ejs') %> 
+
+
+
     <div class="card text-center">
         <div class="card-header">
           Blog by <strong> <%= blog.author %></strong>
@@ -18,12 +22,52 @@
             <img src="<%= blog.image %>" class="card-img-top w-50 p-3"" alt="...">
           <h5 class="card-title"> <%= blog.title %></h5>
           <p class="card-text"><%= blog.text %></p>
-          <a href="/blogs/<%=blog._id%>/edit" class="btn btn-primary">Edit</a>
-          <form action="/blogs/<%=blog._id%>?_method=DELETE" method="POST">
+          
+          <form action="/blogs/<%=blog._id%>?_method=DELETE" method="POST" >
+            <a href="/blogs/<%=blog._id%>/edit" class="btn btn-primary">Edit</a>
             <button class="btn btn-danger">Delete</button>
         </form>
         </div>
       </div>
+
+      <div class="container mt-5 mb-5">
+        <div class="d-flex justify-content-center row">
+            <div class="d-flex flex-column  col-md-8">
+                <div class="d-flex flex-row comment-top align-items-center w-100 p-3 bg-white border-bottom px-4">
+                <div class="coment-bottom bg-white  w-100 p-3 px-4">
+                  <form action="/blogs/<%=blog._id%>/comments" method="POST" class="needs-validation" novalidate>
+                    <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                      <img class="img-fluid img-responsive rounded-circle mr-2" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" width="38">
+                      <input type="text" class="form-control mr-3" name="comment" placeholder="Add comment" required>
+                      <button class="btn btn-primary" type="submit">Comment</button>
+                    </div>
+                  </form>
+                    <div class="commented-section mt-2">
+                      <% blog.comments.map(comm=>{ %> 
+                        <div class="d-flex bd-highlight">
+                       <div class="p-2 w-100 bd-highlight">
+                         
+                        <div class="d-flex flex-row align-items-center commented-user">
+                          <img class="img-fluid img-responsive rounded-circle mr-2" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" width="38">
+                          <h5 class="mr-2"><%=comm.user%></h5><span class="dot mb-1"></span>
+                            <!-- <span class="mb-1 ml-2"><></span> -->
+                        </div>
+                        <div class="comment-text-sm"><span><%=comm.comment%> </span></div>
+                      </div>
+                      <div class="p-2 flex-shrink-1 bd-highlight">
+                        <form action="/blogs/<%=blog._id%>/comments/<%=comm._id%>?_method=DELETE" method="POST">
+                          <button type="submit" class="btn-close flex-shrink-1" aria-label="Close" ></button>
+                        </form>
+                      </div>
+
+                      </div>
+                        <% }) %> 
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 
       </main>
 
@@ -31,6 +75,28 @@
     <%- include('../partials/footer.ejs') %> 
     
 </body>
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+'use strict'
+
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+var forms = document.querySelectorAll('.needs-validation')
+
+// Loop over them and prevent submission
+Array.prototype.slice.call(forms)
+  .forEach(function (form) {
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
 </html>
 
 

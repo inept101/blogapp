@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Comment = require('./comment');
 
 const blogSchema = new mongoose.Schema({
     author: {
@@ -15,7 +16,13 @@ const blogSchema = new mongoose.Schema({
     text: {
         type: String,
         required:true
-    }
+    },
+    comments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Comment'
+        }
+    ]
 });
 const Blog =mongoose.model('Blog',blogSchema);
 module.exports = Blog;

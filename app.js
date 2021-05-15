@@ -1,17 +1,31 @@
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config();
+}
+
+
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const path = require('path');
+const session = require('express-session');
+const flash = require('connect-flash');
 
-const blogRoutes = require('./routes/blog')
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+
+const User = require('./models/user');
+
+const blogRoutes = require('./routes/blog');
+const authRoutes = require('./routes/auth');
 
 
 
 
 
 
-mongoose.connect('mongodb+srv://admin:Yash1998@cluster0.8lxa3.mongodb.net/blogData?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
 .then(()=>{
     console.log("DB connected");
 })
@@ -28,8 +42,39 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 
-app.use(blogRoutes);
 
+
+
+const sessionConfig = {
+    secret:'somesecret',
+    resave:false,
+    saveUninitialized: true
+}
+
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
+app.use((req,res,next)=>{ 
+    res.locals.success=req.flash('success');
+    res.locals.error=req.flash('error');
+    res.locals.currentUser=req.user;
+    next(); 
+});
+
+
+
+app.use(blogRoutes);
+app.use(authRoutes);
 
 
 
