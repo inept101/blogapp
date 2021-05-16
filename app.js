@@ -73,6 +73,10 @@ app.use((req,res,next)=>{
 
 
 
+app.get('/', (req,res)=>{
+    res.render('blogs/landing');
+})
+
 app.use(blogRoutes);
 app.use(authRoutes);
 
