@@ -3,6 +3,7 @@ const router = express.Router();
 const Blog = require('../models/blog');
 const Comment = require('../models/comment');
 const {isLoggedIn} = require('../middleware');
+const User = require('../models/user');
 
 
 
@@ -34,12 +35,14 @@ router.post('/blogs', isLoggedIn,async (req,res)=>{
         
 
         console.log("new Blog Created.")
-        await Blog.create(req.body.blog);
+        await Blog.create({createdBy:req.user.username, ...req.body.blog});
+        // await User.findOneAndUpdate({username:req.user.username}, {$push{blogs:}})
         req.flash('success','New Blog created');
         res.redirect('/blogs');
 
     } catch(e){
         console.log("something happened. error...");
+        console.log(e);
         req.flash('error', 'cannot able to create Blog');
         res.render('blogs/error');
 
@@ -81,7 +84,7 @@ router.get('/blogs/:id/edit', isLoggedIn, async(req, res)=>{
 router.patch('/blogs/:id', isLoggedIn,async(req,res)=>{
     try{
         await Blog.findByIdAndUpdate(req.params.id, req.body.blog);
-        req.flash('success','Updated successfullly.');
+        req.flash('success','Updated successfully.');
         res.redirect(`/blogs/${req.params.id}`);    
 
     } catch (e){
@@ -98,7 +101,7 @@ router.patch('/blogs/:id', isLoggedIn,async(req,res)=>{
 router.delete('/blogs/:id', isLoggedIn,async(req,res)=>{
     try{
         await Blog.findByIdAndDelete(req.params.id);
-    res.redirect('/blogs');
+         res.redirect('/blogs');
 
     } catch(e){
         console.log("something happened. error...");
@@ -149,15 +152,5 @@ router.delete('/blogs/:id/comments/:cid', isLoggedIn, async(req,res)=>{
 
 
 })
-   
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

@@ -46,7 +46,7 @@ app.use(methodOverride('_method'));
 
 
 const sessionConfig = {
-    secret:'somesecret',
+    secret:'someSecret',
     resave:false,
     saveUninitialized: true
 }
