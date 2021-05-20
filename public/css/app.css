@@ -9,9 +9,11 @@ body {
   }
 
   
+
+  
   #hero {
   width: 100%;
-  height: 80vh;
+  height: 90vh;
   background: url("../img/hero-bg.jpg") center center;
   background-size: cover;
   position: relative;
@@ -62,11 +64,6 @@ body {
   background: #fd680e;
 }
 
-
-
-
-
-
 .comments {
     text-decoration: underline;
     text-underline-position: under;
@@ -90,4 +87,12 @@ body {
 }
 #footer .copyright {
   text-align: center;
+}
+
+.container-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 370px;
+    height: 240px; 
 }

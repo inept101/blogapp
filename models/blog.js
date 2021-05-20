@@ -18,8 +18,7 @@ const blogSchema = new mongoose.Schema({
         required:true
     },
     createdBy:  {
-        type: String,
-        required: true
+        type: String
 
     },
     comments:[

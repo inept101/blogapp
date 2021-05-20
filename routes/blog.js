@@ -117,7 +117,6 @@ router.post('/blogs/:id/comments', isLoggedIn,async(req,res)=>{
     try{
         const blog = await Blog.findById(req.params.id);
         const comment = new Comment({user: req.user.username,...req.body});
-        console.log(comment);
         blog.comments.push(comment);
         await comment.save();
         await blog.save();
@@ -126,6 +125,7 @@ router.post('/blogs/:id/comments', isLoggedIn,async(req,res)=>{
 
     } catch(e){
         console.log("something happened. error...");
+        console.log(e);
         req.flash('error', 'not able to add the comment');
         res.render('blogs/error');
         

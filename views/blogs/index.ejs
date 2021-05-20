@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <%- include('../partials/head.ejs') %> 
-    <title>index</title>
+  <title>BLOGG APP | HOME</title>
+    
 </head>
 <body>
     <%- include('../partials/header.ejs') %> 
@@ -17,17 +18,20 @@
     <div class="container-md"></div>
    <% blogs.map(blog =>{ %>
     
-      <div class="card mb-3" style="max-width: 100%, max-height: 240px">
+      <div class="card mb-3" >
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="<%=blog.image%>" class="img-fluid img-thumbnail justify-content-center" alt="..." style="max-height: 240px; max-width:350px;">
+            <div class="container-img ps-4" >
+              <img src="<%=blog.image%>" class="img-thumbnail" alt="..." style="max-height: 240px; ">
+            </div>
+            
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title"><%=blog.title%></h5>
-              <p class="card-text"><%=blog.text.substring(0,325)%></p>
+              <h5 class="card-title fs-4"><strong><%=blog.title%></strong></h5>
+              <p class="card-text"><%=blog.text.substring(0,325)%>...</p>
               <p class="card-text"><small class="text-muted"><%=blog.author%></small></p>
-              <a href="/blogs/<%=blog._id%>" class="btn btn-primary">More Info</a>
+              <a href="/blogs/<%=blog._id%>" class="btn btn-primary">View</a>
             </div>
             
           </div>

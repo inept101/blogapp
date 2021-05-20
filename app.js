@@ -25,7 +25,10 @@ const authRoutes = require('./routes/auth');
 
 
 
-mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    useFindAndModify:false,
+    useCreateIndex:true})
 .then(()=>{
     console.log("DB connected");
 })
