@@ -15,15 +15,15 @@
 
 
     <div class="card text-center">
-        <div class="card-header fs-4">
+        <div class="card-header fs-3">
           <strong><%= blog.title %></strong>
         </div>
         <div class="card-body">
          <img src="<%= blog.image %>" class="card-img-top img-fluid p-3" alt="user" style="max-height: 80vh; width: auto;">
-          <h5 class="card-title"> Blog by <strong> <%= blog.author %></strong></h5>
-          <p class="text-left" style="white-space: pre-line;text-align: left;"><%= blog.text %></p>
+          <h4 class="card-title"> Blog by <strong> <%= blog.author %></strong></h4>
+          <p class="text-left fs-5" style="white-space: pre-line;text-align: left;"><%= blog.text %></p>
           <% if(currentUser){%>
-            <% if(currentUser.username===blog.createdBy){%>
+            <% if( currentUser.username==="admin" ||currentUser.username===blog.createdBy){%>
           <form action="/blogs/<%=blog._id%>?_method=DELETE" method="POST" >
             <a href="/blogs/<%=blog._id%>/edit" class="btn btn-primary">Edit</a>
             <button class="btn btn-danger">Delete</button>
@@ -59,7 +59,7 @@
                         <div class="comment-text-sm ms-5"><span><%=comm.comment%> </span></div>
                       </div>
                       <% if(currentUser){%>
-                        <% if(currentUser.username===comm.user){%>
+                        <% if(currentUser.username==="admin" || currentUser.username===comm.user){%>
                       <div class="p-2 flex-shrink-1 bd-highlight">
                         <form action="/blogs/<%=blog._id%>/comments/<%=comm._id%>?_method=DELETE" method="POST">
                           <button type="submit" class="btn-close flex-shrink-1" aria-label="Close" ></button>

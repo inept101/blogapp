@@ -16,7 +16,7 @@
     <%- include('../partials/flash.ejs') %> 
 
     <div class="container-md"></div>
-   <% blogs.map(blog =>{ %>
+   <% blogs.slice(0).reverse().map(blog =>{ %>
     
       <div class="card mb-3" >
         <div class="row g-0">

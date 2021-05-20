@@ -34,13 +34,12 @@ router.post('/login',
               failureFlash: true }),
             (req, res)=>{
                 req.flash('success',`Welcome back ${req.user.username}`);
-                console.log(req.user);
                 res.redirect('/blogs');
 });
 
 router.get('/logout',(req, res)=>{
     req.logout();
-    req.flash('success', 'Logged Out Succesfully.');
+    req.flash('success', 'Logged Out Successfully.');
     res.redirect('/login');
 
 })
