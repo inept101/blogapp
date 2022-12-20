@@ -1,0 +1,3 @@
+# blogapp
+
+USING EJS
