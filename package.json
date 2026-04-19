@@ -1,25 +1,30 @@
 {
   "name": "blogapp",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "connect-flash": "^0.1.1",
-    "dotenv": "^9.0.2",
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "method-override": "^3.0.0",
-    "mongoose": "^6.2.1",
-    "nodemon": "^2.0.7",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^6.1.0"
-  },
-  "devDependencies": {},
+  "version": "2.0.0",
+  "private": true,
   "scripts": {
-    "start": "nodemon ./app.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "mongoose": "^8.5.0",
+    "next": "^14.2.5",
+    "next-auth": "^4.24.7",
+    "next-themes": "^0.4.6",
+    "passport-local-mongoose": "^8.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "dotenv": "^17.4.2",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.6",
+    "typescript": "^5.5.3"
+  }
 }
