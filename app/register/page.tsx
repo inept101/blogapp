@@ -32,7 +32,7 @@ export default function RegisterPage() {
       if (!res.ok) {
         setError(data.error || 'Registration failed.');
       } else {
-        router.push('/login');
+        router.push('/login?registered=1');
       }
     } catch {
       setError('Something went wrong. Please try again.');

@@ -2,8 +2,11 @@ import { connectDB } from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { notFound } from 'next/navigation';
-import { deleteBlog, addComment, deleteComment } from '@/lib/actions';
+import { deleteBlog } from '@/lib/actions';
 import Link from 'next/link';
+import LikeButton from '@/components/LikeButton';
+import CommentSection from '@/components/CommentSection';
+import { readTime } from '@/lib/utils';
 
 async function getBlog(id: string) {
   await connectDB();
@@ -16,8 +19,9 @@ async function getBlog(id: string) {
   return JSON.parse(JSON.stringify(blog));
 }
 
-export default async function BlogPage({ params }: { params: { id: string } }) {
-  const [blog, session] = await Promise.all([getBlog(params.id), getServerSession(authOptions)]);
+export default async function BlogPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const [blog, session] = await Promise.all([getBlog(id), getServerSession(authOptions)]);
 
   if (!blog) notFound();
 
@@ -26,92 +30,68 @@ export default async function BlogPage({ params }: { params: { id: string } }) {
 
   return (
     <article className="max-w-3xl mx-auto px-4 py-12">
-      <header className="mb-10">
-        <h1 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight mb-4">{blog.title}</h1>
-        <div className="flex items-center gap-3 text-sm text-slate-500">
-          <span className="text-slate-700 dark:text-slate-400 font-medium">{blog.author}</span>
-          {canEdit && (
-            <div className="ml-auto flex items-center gap-2">
-              <Link
-                href={`/blogs/${blog._id}/edit`}
-                className="px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-violet-500 hover:text-violet-600 dark:hover:text-white text-xs font-medium transition-all"
-              >
-                Edit
-              </Link>
-              <form action={deleteBlogAction}>
-                <button
-                  type="submit"
-                  className="px-4 py-1.5 rounded-lg border border-red-200 dark:border-red-900/50 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-400 dark:hover:border-red-700 text-xs font-medium transition-all"
-                >
-                  Delete
-                </button>
-              </form>
-            </div>
-          )}
+      {/* Tags */}
+      {blog.tags?.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {blog.tags.map((tag: string) => (
+            <Link key={tag} href={`/blogs?tag=${tag}`} className="px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 text-xs font-medium hover:bg-violet-200 dark:hover:bg-violet-800/40 transition-colors">
+              {tag}
+            </Link>
+          ))}
         </div>
-      </header>
+      )}
 
+      {/* Title */}
+      <h1 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight mb-4">{blog.title}</h1>
+
+      {/* Meta */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3 text-sm text-slate-500">
+          <Link href={`/users/${blog.createdBy}`} className="text-slate-700 dark:text-slate-300 font-medium hover:text-violet-600 dark:hover:text-violet-400 transition-colors">
+            {blog.author}
+          </Link>
+          <span>·</span>
+          <span>{readTime(blog.text || '')}</span>
+        </div>
+        {canEdit && (
+          <div className="flex items-center gap-2">
+            <Link href={`/blogs/${blog._id}/edit`} className="px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-violet-500 hover:text-violet-600 dark:hover:text-white text-xs font-medium transition-all">Edit</Link>
+            <form action={deleteBlogAction}>
+              <button type="submit" className="px-4 py-1.5 rounded-lg border border-red-200 dark:border-red-900/50 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-xs font-medium transition-all">Delete</button>
+            </form>
+          </div>
+        )}
+      </div>
+
+      {/* Cover image */}
       {blog.image && (
         <div className="mb-10 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800">
           <img src={blog.image} alt={blog.title} className="w-full max-h-96 object-cover" />
         </div>
       )}
 
-      <div className="text-slate-700 dark:text-slate-300 leading-relaxed text-lg whitespace-pre-line mb-16">
-        {blog.text}
+      {/* Content — rendered as rich HTML from TipTap */}
+      <div
+        className="prose prose-slate dark:prose-invert max-w-none mb-10"
+        dangerouslySetInnerHTML={{ __html: blog.text }}
+      />
+
+      {/* Draft badge */}
+      {!blog.published && (
+        <div className="mb-6 px-4 py-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 text-sm font-medium inline-block">
+          Draft — not visible to others
+        </div>
+      )}
+
+      {/* Like + share row */}
+      <div className="flex items-center gap-3 py-6 border-y border-slate-200 dark:border-slate-800 mb-12">
+        <LikeButton blogId={blog._id} likes={blog.likes ?? []} />
+        <span className="text-sm text-slate-400 dark:text-slate-600">
+          {blog.likes?.length === 1 ? '1 like' : `${blog.likes?.length ?? 0} likes`}
+        </span>
       </div>
 
-      <hr className="border-slate-200 dark:border-slate-800 mb-12" />
-
-      <section>
-        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-          Comments{' '}
-          <span className="text-slate-400 dark:text-slate-600 text-base font-normal">({blog.comments?.length ?? 0})</span>
-        </h2>
-
-        {session ? (
-          <form action={addComment.bind(null, blog._id)} className="flex gap-3 mb-8">
-            <input
-              name="comment"
-              placeholder="Leave a comment..."
-              required
-              className="flex-1 px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors text-sm"
-            />
-            <button
-              type="submit"
-              className="px-5 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold transition-colors"
-            >
-              Post
-            </button>
-          </form>
-        ) : (
-          <div className="mb-8 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm text-slate-500 text-center">
-            <Link href="/login" className="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300">Login</Link> to leave a comment.
-          </div>
-        )}
-
-        <div className="space-y-4">
-          {blog.comments?.map((comment: any) => {
-            const canDeleteComment = session && (session.user.username === 'admin' || session.user.username === comment.user);
-            return (
-              <div key={comment._id} className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-700/40 border border-violet-200 dark:border-violet-700/30 flex items-center justify-center text-violet-600 dark:text-violet-300 text-xs font-bold">
-                  {comment.user?.[0]?.toUpperCase() ?? '?'}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">{comment.user}</p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 break-words">{comment.comment}</p>
-                </div>
-                {canDeleteComment && (
-                  <form action={deleteComment.bind(null, blog._id, comment._id)}>
-                    <button type="submit" className="flex-shrink-0 text-slate-400 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 transition-colors text-lg leading-none" aria-label="Delete comment">×</button>
-                  </form>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <CommentSection blogId={blog._id} comments={blog.comments ?? []} />
     </article>
   );
 }

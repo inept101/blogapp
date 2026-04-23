@@ -56,9 +56,14 @@ export default function Navbar() {
               All Posts
             </Link>
             {session && (
-              <Link href="/blogs/new" className="text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                Write
-              </Link>
+              <>
+                <Link href="/my-blogs" className="text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  My Posts
+                </Link>
+                <Link href="/blogs/new" className="text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Write
+                </Link>
+              </>
             )}
           </div>
 
@@ -66,9 +71,12 @@ export default function Navbar() {
             <ThemeToggle />
             {session ? (
               <>
-                <span className="text-sm text-slate-500 dark:text-slate-400">
+                <Link href={`/users/${session.user.username}`} className="text-sm text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors">
                   Hi, <span className="text-violet-600 dark:text-violet-400 font-medium">{session.user.username}</span>
-                </span>
+                </Link>
+                <Link href="/settings" className="text-sm px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-violet-500 hover:text-violet-600 dark:hover:text-white transition-all">
+                  Settings
+                </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: '/login' })}
                   className="text-sm px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-violet-500 hover:text-violet-600 dark:hover:text-white transition-all"
@@ -118,7 +126,10 @@ export default function Navbar() {
         <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 flex flex-col gap-4">
           <Link href="/blogs" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>All Posts</Link>
           {session && (
-            <Link href="/blogs/new" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>Write</Link>
+            <>
+              <Link href="/my-blogs" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>My Posts</Link>
+              <Link href="/blogs/new" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>Write</Link>
+            </>
           )}
           {session ? (
             <button onClick={() => signOut({ callbackUrl: '/login' })} className="text-sm text-left text-slate-500 dark:text-slate-400">
