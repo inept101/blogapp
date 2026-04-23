@@ -30,8 +30,9 @@ export default function CommentSection({ blogId, comments }: Props) {
   const { data: session } = useSession();
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
-  const topLevel = comments.filter(c => !c.parentId);
-  const getReplies = (parentId: string) => comments.filter(c => c.parentId === parentId);
+  const safeComments = comments ?? [];
+  const topLevel = safeComments.filter(c => !c.parentId);
+  const getReplies = (parentId: string) => safeComments.filter(c => c.parentId === parentId);
 
   const addCommentAction = addComment.bind(null, blogId);
   const canDelete = (comment: Comment) =>
@@ -40,7 +41,7 @@ export default function CommentSection({ blogId, comments }: Props) {
   return (
     <section>
       <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-        Comments <span className="text-slate-400 dark:text-slate-600 text-base font-normal">({comments.length})</span>
+        Comments <span className="text-slate-400 dark:text-slate-600 text-base font-normal">({safeComments.length})</span>
       </h2>
 
       {/* Top-level comment form */}

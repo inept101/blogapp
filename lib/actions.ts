@@ -79,7 +79,7 @@ export async function toggleLike(blogId: string) {
   const { Blog } = await getModels();
   const blog = await Blog.findById(blogId);
   const username = session.user.username;
-  const hasLiked = blog.likes.includes(username);
+  const hasLiked = (blog.likes ?? []).includes(username);
 
   await Blog.findByIdAndUpdate(blogId, hasLiked
     ? { $pull: { likes: username } }
