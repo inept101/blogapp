@@ -135,11 +135,12 @@ export default async function BlogsPage({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {blogs.map((blog: any) => (
-            <Link
+            <div
               key={blog._id}
-              href={`/blogs/${blog._id}`}
-              className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-violet-400 dark:hover:border-violet-500/50 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100 dark:hover:shadow-violet-900/20"
+              className="group relative flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-violet-400 dark:hover:border-violet-500/50 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-100 dark:hover:shadow-violet-900/20"
             >
+              {/* overlay link covers the whole card */}
+              <Link href={`/blogs/${blog._id}`} className="absolute inset-0 z-0" aria-label={blog.title} />
               {blog.image ? (
                 <div className="h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
                   <img src={blog.image} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -163,9 +164,9 @@ export default async function BlogsPage({
                 <p className="text-sm text-slate-500 line-clamp-2 flex-1 mb-4">
                   {blog.text?.replace(/<[^>]*>/g, ' ').slice(0, 150)}
                 </p>
-                <div className="flex items-center justify-between text-xs">
+                <div className="relative z-10 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <Link href={`/users/${blog.createdBy}`} onClick={e => e.stopPropagation()} className="text-slate-400 dark:text-slate-600 hover:text-violet-600 dark:hover:text-violet-400 font-medium transition-colors">
+                    <Link href={`/users/${blog.createdBy}`} className="text-slate-400 dark:text-slate-600 hover:text-violet-600 dark:hover:text-violet-400 font-medium transition-colors">
                       {blog.author}
                     </Link>
                     <span className="text-slate-300 dark:text-slate-700">·</span>
@@ -177,7 +178,7 @@ export default async function BlogsPage({
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}
