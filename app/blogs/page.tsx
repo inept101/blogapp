@@ -10,7 +10,7 @@ async function getBlogs(search: string, tag: string, page: number, username?: st
   await connectDB();
   const Blog = (await import('../../models/blog')).default;
 
-  const query: any = { published: true };
+  const query: any = { published: { $ne: false } };
   if (tag) query.tags = tag;
   if (search) query.$text = { $search: search };
 
@@ -28,7 +28,7 @@ async function getAllTags() {
   await connectDB();
   const Blog = (await import('../../models/blog')).default;
   const result = await Blog.aggregate([
-    { $match: { published: true } },
+    { $match: { published: { $ne: false } } },
     { $unwind: '$tags' },
     { $group: { _id: '$tags', count: { $sum: 1 } } },
     { $sort: { count: -1 } },
