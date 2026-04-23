@@ -9,15 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tiptap/extension-character-count": "^3.22.4",
+    "@tiptap/extension-image": "^3.22.4",
+    "@tiptap/extension-link": "^3.22.4",
+    "@tiptap/extension-placeholder": "^3.22.4",
+    "@tiptap/extension-text-align": "^3.22.4",
+    "@tiptap/extension-underline": "^3.22.4",
+    "@tiptap/react": "^3.22.4",
+    "@tiptap/starter-kit": "^3.22.4",
+    "@uploadthing/react": "^7.3.3",
     "mongoose": "^8.5.0",
-    "next": "^14.2.5",
-    "next-auth": "^4.24.7",
+    "next": "^15.3.1",
+    "next-auth": "^4.24.11",
     "next-themes": "^0.4.6",
     "passport-local-mongoose": "^8.0.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "resend": "^6.12.0",
+    "uploadthing": "^7.7.4"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

@@ -4,6 +4,7 @@ const commentSchema = new mongoose.Schema(
   {
     user: { type: String, required: true },
     comment: { type: String, required: true },
+    parentId: { type: mongoose.Schema.Types.ObjectId, default: null },
   },
   { timestamps: { createdAt: true, updatedAt: false } }
 );

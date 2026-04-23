@@ -3,6 +3,9 @@ const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
+  emailVerified: { type: Boolean, default: false },
+  verificationToken: { type: String },
+  verificationTokenExpiry: { type: Date },
 });
 
 userSchema.plugin(passportLocalMongoose);
