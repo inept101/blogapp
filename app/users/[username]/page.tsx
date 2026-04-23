@@ -6,7 +6,7 @@ import { readTime } from '@/lib/utils';
 async function getUserBlogs(username: string) {
   await connectDB();
   const Blog = (await import('../../../models/blog')).default;
-  const blogs = await Blog.find({ createdBy: username, published: true }).sort({ createdAt: -1 }).lean();
+  const blogs = await Blog.find({ createdBy: username, published: { $ne: false } }).sort({ createdAt: -1 }).lean();
   return JSON.parse(JSON.stringify(blogs));
 }
 
